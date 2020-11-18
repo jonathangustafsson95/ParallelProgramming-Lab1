@@ -10,7 +10,8 @@ namespace Mandelbrot
 {
     public class MandelbrotSingleThread : MandelbrotBase
     {
-        public override string Name { 
+        public override string Name
+        {
             get { return "MandelbrotSingleThread"; }
         }
 
@@ -21,6 +22,25 @@ namespace Mandelbrot
         public override void Compute()
         {
             Compute(new Tuple<double, double>(LowerX, UpperX),
+                    new Tuple<double, double>(LowerY, UpperY),
+                    Image);
+        }
+    }
+
+    public class MandelbrotParallel : MandelbrotBase
+    {
+        public override string Name
+        {
+            get { return "MandelbrotParallel"; }
+        }
+
+        public MandelbrotParallel(int pixelsX, int pixelsY) : base(pixelsX, pixelsY)
+        {
+        }
+
+        public override void Compute()
+        {
+            ParallelCompute(new Tuple<double, double>(LowerX, UpperX),
                     new Tuple<double, double>(LowerY, UpperY),
                     Image);
         }

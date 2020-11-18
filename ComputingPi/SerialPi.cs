@@ -137,7 +137,7 @@ namespace ComputingPi
             double step = 1.0 / (double)numberOfSteps;
             object monitor = new object();
             var rangePartitioner = Partitioner.Create(0, numberOfSteps);
-
+            
             Parallel.ForEach(rangePartitioner, () => 0.0, (range, state, local) =>
             {
                 for (int i = range.Item1; i < range.Item2; i++)
