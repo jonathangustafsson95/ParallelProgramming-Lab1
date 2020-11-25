@@ -27,20 +27,39 @@ namespace Mandelbrot
         }
     }
 
-    public class MandelbrotParallel : MandelbrotBase
+    public class MandelbrotParallelPartitioner : MandelbrotBase
     {
         public override string Name
         {
-            get { return "MandelbrotParallel"; }
+            get { return "MandelbrotParallelPartitioner"; }
         }
 
-        public MandelbrotParallel(int pixelsX, int pixelsY) : base(pixelsX, pixelsY)
+        public MandelbrotParallelPartitioner(int pixelsX, int pixelsY) : base(pixelsX, pixelsY)
         {
         }
 
         public override void Compute()
         {
-            ParallelCompute(new Tuple<double, double>(LowerX, UpperX),
+            ParallelPartitioner(new Tuple<double, double>(LowerX, UpperX),
+                    new Tuple<double, double>(LowerY, UpperY),
+                    Image);
+        }
+    }
+
+    public class MandelbrotParallelFor : MandelbrotBase
+    {
+        public override string Name
+        {
+            get { return "MandelbrotParallelFor"; }
+        }
+
+        public MandelbrotParallelFor(int pixelsX, int pixelsY) : base(pixelsX, pixelsY)
+        {
+        }
+
+        public override void Compute()
+        {
+            ParallelFor(new Tuple<double, double>(LowerX, UpperX),
                     new Tuple<double, double>(LowerY, UpperY),
                     Image);
         }
