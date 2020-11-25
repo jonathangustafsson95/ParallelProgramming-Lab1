@@ -47,6 +47,7 @@
     <Compile Include="Quicksort.cs" />
     <Compile Include="SelectionSort.cs" />
     <Compile Include="StandardSort.cs" />
+    <Compile Include="TopNQuickSort.cs" />
     <Compile Include="TopNSelectionSort.cs" />
     <Compile Include="TopNStandardSort.cs" />
   </ItemGroup>

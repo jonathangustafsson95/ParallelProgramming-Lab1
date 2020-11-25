@@ -7,28 +7,28 @@ using System.Threading.Tasks;
 
 namespace Sorting
 {
-    public class Quicksort<T> : ISort<T>
+    public class TopNQuickSort<T> : ITopNSort<T>
     {
         public string Name { get { return "QuickSortParallel"; } }
         public static int CONC_LIMIT = Environment.ProcessorCount * 2;
         public volatile int _invokeCalls = 0;
 
-        public void Sort(T[] inputOutput)
+        public void TopNSort(T[] inputOutput, int n)
         {
-            Sort(inputOutput, 0, inputOutput.Length - 1, Comparer<T>.Default);
+            TopNSort(inputOutput, 0, inputOutput.Length - 1, n, Comparer<T>.Default);
         }
 
-        public void Sort(T[] inputOutput, int start, int end, IComparer<T> comparer) 
+        public void TopNSort(T[] inputOutput, int start, int end, int n, IComparer<T> comparer)
         {
             int threshold = 9; // nuffra för att bestämma när listan att sortera börjar bli så liten att
-                               //insertionsort är effektivare. 9 ska tydligen vara ett optimalt tal.
-            //Console.WriteLine("Conc_Limit = {0}", CONC_LIMIT);
-            //Console.WriteLine("Start index: " + start + "\nEnd index: " + end);
-            //Console.WriteLine("Thread Id: {0}", Thread.CurrentThread.ManagedThreadId);
+                                //insertionsort är effektivare. 9 ska tydligen vara ett optimalt tal.
+                                //Console.WriteLine("Conc_Limit = {0}", CONC_LIMIT);
+                                //Console.WriteLine("Start index: " + start + "\nEnd index: " + end);
+                                //Console.WriteLine("Thread Id: {0}", Thread.CurrentThread.ManagedThreadId);
 
             if (end - start <= threshold)
             {
-                InsertionSort(inputOutput, start, end+1, comparer);
+                InsertionSort(inputOutput, start, end + 1, comparer);
             }
             else
             {
@@ -37,22 +37,19 @@ namespace Sorting
                 {
                     Interlocked.Increment(ref _invokeCalls);
                     Parallel.Invoke(
-                        () => Sort(inputOutput, start, pivotPos-1, comparer),
-                        () => Sort(inputOutput, pivotPos + 1, end, comparer));
+                        () => TopNSort(inputOutput, start, pivotPos - 1, comparer),
+                        () => TopNSort(inputOutput, pivotPos + 1, end, comparer));
                     Interlocked.Decrement(ref _invokeCalls);
                 }
                 else
                 {
-                    Sort(inputOutput, start, pivotPos-1, comparer);
-                    Sort(inputOutput, pivotPos+1, end, comparer);
+                    TopNSort(inputOutput, start, pivotPos - 1, comparer);
+                    TopNSort(inputOutput, pivotPos + 1, end, comparer);
                 }
             }
         }
 
-        public void Sort(T[] inputOutput, IComparer<T> comparer)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         private void InsertionSort(T[] inputOutput, int start, int end, IComparer<T> comparer)
         {
@@ -94,6 +91,10 @@ namespace Sorting
 
             return i + 1;
         }
+
+        public T[] TopNSort(T[] inputOutput, int n, IComparer<T> comparer)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
-
