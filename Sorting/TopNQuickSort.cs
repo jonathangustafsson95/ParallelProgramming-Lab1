@@ -15,7 +15,7 @@ namespace Sorting
 
         public T[] TopNSort(T[] inputOutput, int n)
         {
-            TopNSort(inputOutput, 0,  n, Comparer<T>.Default);
+            TopNSort(inputOutput, 0, n, Comparer<T>.Default);
             Console.WriteLine("jonte är avundsjuk på min skärm");
             return inputOutput.Take<T>(n).ToArray();
         }
@@ -23,13 +23,13 @@ namespace Sorting
         public void TopNSort(T[] inputOutput, int start, int end, IComparer<T> comparer)
         {
             int threshold = 9; // nuffra för att bestämma när listan att sortera börjar bli så liten att
-                                //insertionsort är effektivare. 9 ska tydligen vara ett optimalt tal.
-                                //Console.WriteLine("Conc_Limit = {0}", CONC_LIMIT);
-                                //Console.WriteLine("Start index: " + start + "\nEnd index: " + end);
-                                //Console.WriteLine("Thread Id: {0}", Thread.CurrentThread.ManagedThreadId);
+                               //insertionsort är effektivare. 9 ska tydligen vara ett optimalt tal.
+                               //Console.WriteLine("Conc_Limit = {0}", CONC_LIMIT);
+                               //Console.WriteLine("Start index: " + start + "\nEnd index: " + end);
+                               //Console.WriteLine("Thread Id: {0}", Thread.CurrentThread.ManagedThreadId);
 
             if (end - start <= threshold)
-            { 
+            {
                 InsertionSort(inputOutput, start, end + 1, comparer);
             }
             else
@@ -51,7 +51,7 @@ namespace Sorting
             }
         }
 
-       
+
 
         private void InsertionSort(T[] inputOutput, int start, int end, IComparer<T> comparer)
         {

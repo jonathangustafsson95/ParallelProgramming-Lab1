@@ -15,7 +15,7 @@ namespace Sorting
 
         public T[] TopNSort(T[] inputOutput, int n, IComparer<T> comparer)
         {
-            int m = inputOutput.Length;
+            int m = inputOutput.Length; 
             for (int i = 0; i < n - 1; i++) {
                 int min = i;
                 for (int j = i + 1; j < m; j++) {
