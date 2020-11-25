@@ -9,16 +9,18 @@ namespace Sorting
 {
     public class TopNQuickSort<T> : ITopNSort<T>
     {
-        public string Name { get { return "QuickSortParallel"; } }
+        public string Name { get { return "TopN-QuickSort"; } }
         public static int CONC_LIMIT = Environment.ProcessorCount * 2;
         public volatile int _invokeCalls = 0;
 
-        public void TopNSort(T[] inputOutput, int n)
+        public T[] TopNSort(T[] inputOutput, int n)
         {
-            TopNSort(inputOutput, 0, inputOutput.Length - 1, n, Comparer<T>.Default);
+            TopNSort(inputOutput, 0,  n, Comparer<T>.Default);
+            Console.WriteLine("jonte är avundsjuk på min skärm");
+            return inputOutput.Take<T>(n).ToArray();
         }
 
-        public void TopNSort(T[] inputOutput, int start, int end, int n, IComparer<T> comparer)
+        public void TopNSort(T[] inputOutput, int start, int end, IComparer<T> comparer)
         {
             int threshold = 9; // nuffra för att bestämma när listan att sortera börjar bli så liten att
                                 //insertionsort är effektivare. 9 ska tydligen vara ett optimalt tal.
@@ -27,7 +29,7 @@ namespace Sorting
                                 //Console.WriteLine("Thread Id: {0}", Thread.CurrentThread.ManagedThreadId);
 
             if (end - start <= threshold)
-            {
+            { 
                 InsertionSort(inputOutput, start, end + 1, comparer);
             }
             else

@@ -74,33 +74,6 @@ namespace Mandelbrot
             double stepx = (xRange.Item2 - xRange.Item1) / widthPixels;
             double stepy = (yRange.Item2 - yRange.Item1) / heightPixels;
           
-            #region SomeCode
-            // int parWidthStart = 0, parHeightStart = 0;
-            // int parWidth = widthPixels / 8, parHeight = heightPixels / 8;
-            // for (int x = 0; x < 8; x++)
-            // {
-            //     for (int k = 0; k < 8; k++)
-            //     {
-            //         // Kör en parallel.for med tmpWidthStart och tmpWidth, samt tmpHeightStart och tmpHeight i input.
-            //         //Parallel.For(börjaw, slutaw, börjah, slutah)
-            //         parHeightStart = parHeight * k;
-            //         parHeight = parHeight * k;
-            //     }
-            //     parWidthStart = parWidth * x;
-            //     parWidth = parWidth * x;
-            // }
-            // for (int i = 0; i < widthPixels; i++)
-            // {
-            //     for (int j = 0; j < heightPixels; j++)
-            //     {
-            //         double tempx = xRange.Item1 + i * stepx;
-            //         double tempy = yRange.Item1 + j * stepy;
-            //         int color = ParallelDiverge(tempx, tempy);
-            //         image[i, j] = MAX_ITERATIONS - color;
-            //     }
-            // } 
-            #endregion
-
             object monitor = new object();
 
             Parallel.ForEach(Partitioner.Create(0, widthPixels), range =>
@@ -113,27 +86,12 @@ namespace Mandelbrot
                     {
                         double tempx = xRange.Item1 + i * stepx;
                         double tempy = yRange.Item1 + j * stepy;
-                        int color = ParallelDiverge(tempx, tempy);
+                        int color = Diverge(tempx, tempy);
                         lock(monitor)
                             image[i, j] = MAX_ITERATIONS - color;
                     }
                 }
             });
-        }
-
-        protected int ParallelDiverge(double cx, double cy)
-        {
-            int iter = 0;
-            double vx = cx, vy = cy;
-            while (iter < MAX_ITERATIONS && (vx * vx + vy * vy) < 4)
-            {
-                double tx = vx * vx - vy * vy + cx;
-                double ty = 2 * vx * vy + cy;
-                vx = tx;
-                vy = ty;
-                iter++;
-            }
-            return iter;
         }
 
         protected void ParallelFor(Tuple<double, double> xRange, Tuple<double, double> yRange, int[,] image)
@@ -150,7 +108,7 @@ namespace Mandelbrot
                 {
                     double tempx = xRange.Item1 + i * stepx;
                     double tempy = yRange.Item1 + j * stepy;
-                    int color = ParallelDiverge(tempx, tempy);
+                    int color = Diverge(tempx, tempy);
                     localState = Tuple.Create(j, color);
 
                     return localState;
