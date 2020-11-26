@@ -15,12 +15,11 @@ namespace Sorting
 
         public T[] TopNSort(T[] inputOutput, int n)
         {
-            TopNSort(inputOutput, 0, n, Comparer<T>.Default);
-            Console.WriteLine("jonte är avundsjuk på min skärm");
+            TopNSort(inputOutput, 0, inputOutput.Length - 1, Comparer<T>.Default);
             return inputOutput.Take<T>(n).ToArray();
         }
 
-        public void TopNSort(T[] inputOutput, int start, int end, IComparer<T> comparer)
+        public T[] TopNSort(T[] inputOutput, int start, int end, IComparer<T> comparer)
         {
             int threshold = 9; // nuffra för att bestämma när listan att sortera börjar bli så liten att
                                //insertionsort är effektivare. 9 ska tydligen vara ett optimalt tal.
@@ -49,6 +48,7 @@ namespace Sorting
                     TopNSort(inputOutput, pivotPos + 1, end, comparer);
                 }
             }
+            return inputOutput;
         }
 
 

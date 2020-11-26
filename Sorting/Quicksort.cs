@@ -22,9 +22,9 @@ namespace Sorting
         {
             int threshold = 9; // nuffra för att bestämma när listan att sortera börjar bli så liten att
                                //insertionsort är effektivare. 9 ska tydligen vara ett optimalt tal.
-            //Console.WriteLine("Conc_Limit = {0}", CONC_LIMIT);
-            //Console.WriteLine("Start index: " + start + "\nEnd index: " + end);
-            //Console.WriteLine("Thread Id: {0}", Thread.CurrentThread.ManagedThreadId);
+                               //Console.WriteLine("Conc_Limit = {0}", CONC_LIMIT);
+                               //Console.WriteLine("Start index: " + start + "\nEnd index: " + end);
+                               //Console.WriteLine("Thread Id: {0}", Thread.CurrentThread.ManagedThreadId);
 
             if (end - start <= threshold)
             {

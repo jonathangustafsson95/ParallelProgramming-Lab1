@@ -45,23 +45,4 @@ namespace Mandelbrot
                     Image);
         }
     }
-
-    public class MandelbrotParallelFor : MandelbrotBase
-    {
-        public override string Name
-        {
-            get { return "MandelbrotParallelFor"; }
-        }
-
-        public MandelbrotParallelFor(int pixelsX, int pixelsY) : base(pixelsX, pixelsY)
-        {
-        }
-
-        public override void Compute()
-        {
-            ParallelFor(new Tuple<double, double>(LowerX, UpperX),
-                    new Tuple<double, double>(LowerY, UpperY),
-                    Image);
-        }
-    }
 }

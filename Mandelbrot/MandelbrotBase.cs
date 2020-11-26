@@ -93,27 +93,5 @@ namespace Mandelbrot
                 }
             });
         }
-
-        protected void ParallelFor(Tuple<double, double> xRange, Tuple<double, double> yRange, int[,] image)
-        {
-            int widthPixels = image.GetLength(0);
-            int heightPixels = image.GetLength(1);
-            double stepx = (xRange.Item2 - xRange.Item1) / widthPixels;
-            double stepy = (yRange.Item2 - yRange.Item1) / heightPixels;
-            object monitor = new object();
-
-            Parallel.For(0, widthPixels, i =>
-            {
-                Parallel.For(0, heightPixels, () => Tuple.Create(0, 0), (j, state, localState) =>
-                {
-                    double tempx = xRange.Item1 + i * stepx;
-                    double tempy = yRange.Item1 + j * stepy;
-                    int color = Diverge(tempx, tempy);
-                    localState = Tuple.Create(j, color);
-
-                    return localState;
-                }, localState => { lock (monitor) image[i, localState.Item1] = MAX_ITERATIONS - localState.Item2; });
-            });
-        }
     }
 }
