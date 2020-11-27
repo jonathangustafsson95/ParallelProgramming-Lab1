@@ -8,18 +8,19 @@ using System.Threading.Tasks;
 
 namespace Sorting
 {
-    public class Quicksort<T> : ISort<T>
+    public class QuicksortParallel<T> : ISort<T>
     {
-        public string Name { get { return "QuickSort"; } }
+        public string Name { get { return "QuicksortParallel"; } }
         public static int CONC_LIMIT = Environment.ProcessorCount * 2;
         public volatile int _invokeCalls = 0;
 
         public void Sort(T[] inputOutput)
         {
+            Console.WriteLine("{0}", CONC_LIMIT);
             Sort(inputOutput, 0, inputOutput.Length - 1, Comparer<T>.Default);
         }
 
-        public void Sort(T[] inputOutput, int start, int end, IComparer<T> comparer) 
+        public void Sort(T[] inputOutput, int start, int end, IComparer<T> comparer)
         {
             int threshold = 9; // nuffra för att bestämma när listan att sortera börjar bli så liten att
                                //insertionsort är effektivare. 9 ska tydligen vara ett optimalt tal.
@@ -31,13 +32,24 @@ namespace Sorting
 
             if (end - start <= threshold)
             {
-                InsertionSort(inputOutput, start, end+1, comparer);
+                InsertionSort(inputOutput, start, end + 1, comparer);
             }
             else
             {
                 int pivotPos = Partition(inputOutput, start, end, comparer);
-                Sort(inputOutput, start, pivotPos - 1, comparer);
-                Sort(inputOutput, pivotPos + 1, end, comparer);
+                if (_invokeCalls <= CONC_LIMIT)
+                {
+                    Interlocked.Increment(ref _invokeCalls);
+                    Parallel.Invoke(
+                        () => Sort(inputOutput, start, pivotPos - 1, comparer),
+                        () => Sort(inputOutput, pivotPos + 1, end, comparer));
+                    Interlocked.Decrement(ref _invokeCalls);
+                }
+                else
+                {
+                    Sort(inputOutput, start, pivotPos - 1, comparer);
+                    Sort(inputOutput, pivotPos + 1, end, comparer);
+                }
             }
         }
 

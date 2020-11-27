@@ -45,6 +45,7 @@
     <Compile Include="ITopNSort.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quicksort.cs" />
+    <Compile Include="QuickSortParallel.cs" />
     <Compile Include="SelectionSort.cs" />
     <Compile Include="StandardSort.cs" />
     <Compile Include="TopNQuickSort.cs" />

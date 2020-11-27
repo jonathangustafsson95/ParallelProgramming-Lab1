@@ -15,7 +15,6 @@ namespace Sorting
 
         public T[] TopNSort(T[] inputOutput, int n)
         {
-            int i = 0;
             List<T[]> subIO = new List<T[]>();
             object monitor = new object();
 
@@ -54,9 +53,12 @@ namespace Sorting
             int j = 0;
             int k = 0;
 
+            if (arr1.Length + arr2.Length < n)
+                n = arr1.Length + arr2.Length;
+
             T[] arr3 = new T[n];
 
-            while (i < n && j < n && k < n) {
+            while (i < n && i < arr1.Length && j < n && j < arr2.Length && k < n) {
                 if (comparer.Compare(arr1[i], arr2[j]) < 0) {
                     arr3[k++] = arr1[i++];
                 }
@@ -64,6 +66,14 @@ namespace Sorting
                     arr3[k++] = arr2[j++];
                 }
             }
+
+            if (i == arr1.Length)
+                while (j < n && k < n)
+                    arr3[k++] = arr2[j++];
+            else if (j == arr2.Length)
+                while (i < n && k < n)
+                    arr3[k++] = arr1[i++];
+
             return arr3;
         }
 
